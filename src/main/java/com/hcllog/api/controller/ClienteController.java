@@ -5,6 +5,8 @@ package com.hcllog.api.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,8 +25,8 @@ import com.hcllog.api.domain.repository.ClienteRepository;
 import lombok.AllArgsConstructor;
 
 /**
- * @author helber Controller - A interface para o consumidor. Onde estarão todos
- *         metodos disponiveis para a api web
+ * @author helber 
+ * Controller - A interface para o consumidor. Onde estarão todos  metodos disponiveis para a api web
  */
 
 @AllArgsConstructor
@@ -56,13 +58,14 @@ public class ClienteController {
 
 	@PostMapping //indica qual verbo do protocolo http
 	@ResponseStatus(HttpStatus.CREATED)//retorna o status 200 created
-	public Cliente adicionarCliente(@RequestBody Cliente cliente) {
+	public Cliente adicionarCliente(@Valid @RequestBody Cliente cliente) {
+		//@valid é utilizado para indicar o ponto de validação para o bean validation jakart
 		return clienteRepository.save(cliente);
 
 	}
 
 	@PutMapping("/{clienteId}")
-	public ResponseEntity<Cliente> atualizarCliente(@PathVariable Long clienteId, @RequestBody Cliente cliente) {
+	public ResponseEntity<Cliente> atualizarCliente(@Valid @PathVariable Long clienteId, @RequestBody Cliente cliente) {
 		
 		if (!clienteRepository.existsById(clienteId)) {
 			return ResponseEntity.notFound().build();
