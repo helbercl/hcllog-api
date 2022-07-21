@@ -21,12 +21,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.hcllog.api.domain.model.Cliente;
 import com.hcllog.api.domain.repository.ClienteRepository;
+import com.hcllog.api.domain.service.CatalogoClienteService;
 
 import lombok.AllArgsConstructor;
 
 /**
- * @author helber 
- * Controller - A interface para o consumidor. Onde estarão todos  metodos disponiveis para a api web
+ * @author helber Controller - A interface para o consumidor. Onde estarão todos
+ *         metodos disponiveis para a api web
  */
 
 @AllArgsConstructor
@@ -35,55 +36,49 @@ import lombok.AllArgsConstructor;
 public class ClienteController {
 
 	private ClienteRepository clienteRepository;
-	
+	private CatalogoClienteService catalogoClienteService;
+
 	@GetMapping
 	public List<Cliente> listar() {
-		return clienteRepository.findAll();
+		return catalogoClienteService.listar();
 	}
 
 	@GetMapping("/{clienteId}")
 	public ResponseEntity<Cliente> buscar(@PathVariable Long clienteId) {
-		/*
-		 * Optional<Cliente> cliente = clienteRepository.findById(clienteId);
-		 * 
-		 * if (cliente.isPresent()) { return ResponseEntity.ok(cliente.get()); } return
-		 * ResponseEntity.notFound().build(); }
-		 */
-
-		return clienteRepository.findById(clienteId)
-				//.map(cliente -> ResponseEntity.ok(cliente))
-				.map(ResponseEntity::ok)
-				.orElse(ResponseEntity.notFound().build());
+		return catalogoClienteService.buscar(clienteId);
 	}
 
-	@PostMapping //indica qual verbo do protocolo http
-	@ResponseStatus(HttpStatus.CREATED)//retorna o status 200 created
+	/*
+	 * @PostMapping -indica qual verbo do protocolo http 
+	 * @ResponseStatus-retorna o status 200 created 
+	 * @valid é utilizado para indicar o ponto de validação para o bean validation jakart
+	 */
+	@PostMapping
+	@ResponseStatus(HttpStatus.CREATED)
 	public Cliente adicionarCliente(@Valid @RequestBody Cliente cliente) {
-		//@valid é utilizado para indicar o ponto de validação para o bean validation jakart
-		return clienteRepository.save(cliente);
+		return catalogoClienteService.salvar(cliente);
 
 	}
 
 	@PutMapping("/{clienteId}")
-	public ResponseEntity<Cliente> atualizarCliente(@Valid @PathVariable Long clienteId, @RequestBody Cliente cliente) {
-		
-		if (!clienteRepository.existsById(clienteId)) {
-			return ResponseEntity.notFound().build();
-		}
-		cliente.setId(clienteId);
-		cliente = clienteRepository.save(cliente);
-		return ResponseEntity.ok(cliente);
+	public ResponseEntity<Cliente> atualizarCliente(@PathVariable Long clienteId, @Valid @RequestBody Cliente cliente) {
+
+		ResponseEntity<Cliente> resposta = catalogoClienteService.atualizar(clienteId, cliente);
+		return resposta;
 
 	}
-	
+
+	/*
+	 * Void- o corpo da resposta nao vai existir NotFound(404) NoContent(204)
+	 */
 	@DeleteMapping("/{clienteId}")
-	//Void- o corpo da resposta nao vai existir
-	public ResponseEntity<Void> deletarCliente(@PathVariable Long clienteId){
-		if (!clienteRepository.existsById(clienteId)) {
-			return ResponseEntity.notFound().build();//codigo 404
+	public ResponseEntity<Void> deletarCliente(@PathVariable Long clienteId) {
+
+		if (clienteId <= 0) {
+			return ResponseEntity.notFound().build();// codigo 404
+		} else {
+			return catalogoClienteService.excluir(clienteId);// codigo 204
 		}
-		clienteRepository.deleteById(clienteId);
-		return ResponseEntity.noContent().build();//codigo 204
-		
+
 	}
 }
