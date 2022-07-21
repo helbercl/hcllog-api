@@ -36,13 +36,43 @@
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
-		</dependency>		
+		</dependency>
 		<dependency>
-		 <!-- bliblioteca jackson prepara o formato json para xml  -->
-		 <!-- content negotiation - O consumidor da api escolher o formato aceitado-->
+			<!-- bliblioteca jackson prepara o formato json para xml -->
+			<!-- content negotiation - O consumidor da api escolher o formato aceitado -->
 			<groupId>com.fasterxml.jackson.dataformat</groupId>
 			<artifactId>jackson-dataformat-xml</artifactId>
 			<scope></scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.mariadb.jdbc</groupId>
+			<artifactId>mariadb-java-client</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<!-- bliblioteca flyway -ferramenta que ordena e organiza scripts sql funcionando como CV
+			Com esta ferramenta podemos criar bancos do zero, automatizar scripts,saber quais scripts foram executados
+			sincronizar o banco com a versão de aplicação e permitir rollback de mudanças no banco. 
+			-->		
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.flywaydb</groupId>
+			<artifactId>flyway-mysql</artifactId>
+		</dependency>
+		<dependency>
+		<!-- validation - especificação para validar objetos java  -->
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
 		</dependency>
 	</dependencies>
 

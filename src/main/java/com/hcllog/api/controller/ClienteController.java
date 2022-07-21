@@ -3,55 +3,84 @@
  */
 package com.hcllog.api.controller;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hcllog.api.domain.model.Cliente;
+import com.hcllog.api.domain.repository.ClienteRepository;
+
+import lombok.AllArgsConstructor;
 
 /**
- * @author helber Controller -
+ * @author helber Controller - A interface para o consumidor. Onde estarão todos
+ *         metodos disponiveis para a api web
  */
 
+@AllArgsConstructor
 @RestController
+@RequestMapping("/clientes")
 public class ClienteController {
 
-	@GetMapping("/clientes")
+	private ClienteRepository clienteRepository;
+	
+	@GetMapping
 	public List<Cliente> listar() {
-		List<Cliente> listaCliente = new ArrayList<>();
+		return clienteRepository.findAll();
+	}
+
+	@GetMapping("/{clienteId}")
+	public ResponseEntity<Cliente> buscar(@PathVariable Long clienteId) {
+		/*
+		 * Optional<Cliente> cliente = clienteRepository.findById(clienteId);
+		 * 
+		 * if (cliente.isPresent()) { return ResponseEntity.ok(cliente.get()); } return
+		 * ResponseEntity.notFound().build(); }
+		 */
+
+		return clienteRepository.findById(clienteId)
+				//.map(cliente -> ResponseEntity.ok(cliente))
+				.map(ResponseEntity::ok)
+				.orElse(ResponseEntity.notFound().build());
+	}
+
+	@PostMapping //indica qual verbo do protocolo http
+	@ResponseStatus(HttpStatus.CREATED)//retorna o status 200 created
+	public Cliente adicionarCliente(@RequestBody Cliente cliente) {
+		return clienteRepository.save(cliente);
+
+	}
+
+	@PutMapping("/{clienteId}")
+	public ResponseEntity<Cliente> atualizarCliente(@PathVariable Long clienteId, @RequestBody Cliente cliente) {
 		
-		Cliente cliente = new Cliente();
-		cliente.setId(1L);
-		cliente.setNome("Helber");
-		cliente.setTelefone("(79)998129-9265");
-		cliente.setEmail("helber@infox.com.br");
-		
-		Cliente cliente2 = new Cliente();
-		cliente2.setId(2L);
-		cliente2.setNome("Maria");
-		cliente2.setTelefone("(79)998125-6765");
-		cliente2.setEmail("tercya@infox.com.br");		
-		
-		return Arrays.asList(cliente,cliente2);
+		if (!clienteRepository.existsById(clienteId)) {
+			return ResponseEntity.notFound().build();
+		}
+		cliente.setId(clienteId);
+		cliente = clienteRepository.save(cliente);
+		return ResponseEntity.ok(cliente);
+
 	}
 	
-	@PostMapping
-	public String inserirClientes(String nome, String telefone, String email) {
-		
-		Boolean sucesso=false;
-		String mensagem=null;
-		try {
-			sucesso=true;
-		} catch (Exception e) {
-			sucesso=false;
-			mensagem="Erro :" + e.getMessage();
+	@DeleteMapping("/{clienteId}")
+	//Void- o corpo da resposta nao vai existir
+	public ResponseEntity<Void> deletarCliente(@PathVariable Long clienteId){
+		if (!clienteRepository.existsById(clienteId)) {
+			return ResponseEntity.notFound().build();//codigo 404
 		}
-		
-		return mensagem;
+		clienteRepository.deleteById(clienteId);
+		return ResponseEntity.noContent().build();//codigo 204
 		
 	}
 }
