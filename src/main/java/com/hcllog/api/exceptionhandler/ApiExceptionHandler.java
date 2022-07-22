@@ -1,9 +1,8 @@
 package com.hcllog.api.exceptionhandler;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -48,7 +47,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 		
 		Erro erro = new Erro();
 		erro.setCd_status(status.value());
-		erro.setDataHoraErro(LocalDateTime.now());
+		erro.setDataHoraErro(OffsetDateTime.now());
 		erro.setDescricaoErro("Um ou mais campos estão invalidos");
 		erro.setListaCampos(campos);
 		return super.handleExceptionInternal(ex, erro, headers, status, request);
@@ -60,7 +59,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 		HttpStatus status =HttpStatus.BAD_REQUEST;
 		Erro erro = new Erro();
 		erro.setCd_status(status.value());
-		erro.setDataHoraErro(LocalDateTime.now());
+		erro.setDataHoraErro(OffsetDateTime.now());
 		erro.setDescricaoErro(ne.getMessage());
 		return handleExceptionInternal(ne, erro, new HttpHeaders(), status, request);
 		
