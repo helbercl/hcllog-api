@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hcllog.api.domain.model.Cliente;
-import com.hcllog.api.domain.repository.ClienteRepository;
 import com.hcllog.api.domain.service.CatalogoClienteService;
 
 import lombok.AllArgsConstructor;
@@ -35,7 +34,6 @@ import lombok.AllArgsConstructor;
 @RequestMapping("/clientes")
 public class ClienteController {
 
-	private ClienteRepository clienteRepository;
 	private CatalogoClienteService catalogoClienteService;
 
 	@GetMapping

@@ -27,10 +27,6 @@ public class CatalogoClienteService {
 	@Transactional
 	public Cliente salvar(Cliente cliente) {
 
-//		boolean emailEmUso = clienteRepository.findByEmail(cliente.getEmail())
-//				.stream()
-//				.anyMatch(emailExistente -> !emailExistente.equals(cliente));
-
 		camposEmUso(cliente);
 
 		if (!"".equalsIgnoreCase(mensagem)) {
@@ -74,7 +70,14 @@ public class CatalogoClienteService {
 	}
 
 	public ResponseEntity<Cliente> buscar(@PathVariable Long clienteId) {
-		return clienteRepository.findById(clienteId).map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+		return clienteRepository.findById(clienteId)
+				.map(ResponseEntity::ok)
+				.orElse(ResponseEntity.notFound().build());
+	}
+	
+	public Cliente buscarCliente(Long clienteId){		
+		return clienteRepository.findById(clienteId)
+				.orElseThrow(() ->  new NegocioException("Cliente não encontrado."));		
 	}
 
 	private String camposEmUso(Cliente cliente) {
