@@ -11,8 +11,8 @@ import com.hcllog.api.domain.model.Cliente;
 import com.hcllog.api.domain.model.Entrega;
 import com.hcllog.api.domain.model.StatusEntrega;
 import com.hcllog.api.domain.repository.EntregaRepository;
-import com.hcllog.api.representationmodel.DestinatarioModel;
-import com.hcllog.api.representationmodel.EntregaModel;
+import com.hcllog.api.representationmodel.dto.DestinatarioModel;
+import com.hcllog.api.representationmodel.dto.EntregaModel;
 
 import lombok.AllArgsConstructor;
 
@@ -44,12 +44,14 @@ public class SolicitacaoEntregaService {
 			EntregaModel entregaModel = new EntregaModel();
 			entregaModel.setId(entrega.getId());
 			entregaModel.setNomeCliente(entrega.getCliente().getNome());
+			
 			entregaModel.setDestinatario(new DestinatarioModel());
 			entregaModel.getDestinatario().setNome(entrega.getDestinatario().getNome());
 			entregaModel.getDestinatario().setLogradouro(entrega.getDestinatario().getLogradouro());
 			entregaModel.getDestinatario().setNumero(entrega.getDestinatario().getNumero());
 			entregaModel.getDestinatario().setComplemento(entrega.getDestinatario().getComplemento());
 			entregaModel.getDestinatario().setBairro(entrega.getDestinatario().getBairro());
+			
 			entregaModel.setStatus(entrega.getStatus());
 			entregaModel.setTaxa(entrega.getTaxa());
 			entregaModel.setDataPedido(entrega.getDataPedido());

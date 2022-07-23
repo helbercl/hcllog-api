@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.hcllog.api.domain.model.Entrega;
 import com.hcllog.api.domain.service.SolicitacaoEntregaService;
-import com.hcllog.api.representationmodel.EntregaModel;
+import com.hcllog.api.representationmodel.dto.EntregaModel;
 
 import lombok.AllArgsConstructor;
 

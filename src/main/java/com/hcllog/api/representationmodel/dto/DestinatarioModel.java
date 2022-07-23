@@ -1,4 +1,4 @@
-package com.hcllog.api.representationmodel;
+package com.hcllog.api.representationmodel.dto;
 import lombok.Getter;
 import lombok.Setter;
 
