@@ -47,9 +47,12 @@ public class ClienteController {
 	}
 
 	/*
-	 * @PostMapping -indica qual verbo do protocolo http 
-	 * @ResponseStatus-retorna o status 200 created 
-	 * @valid é utilizado para indicar o ponto de validação para o bean validation jakart
+	 * @PostMapping -indica qual verbo do protocolo http
+	 * 
+	 * @ResponseStatus-retorna o status 200 created
+	 * 
+	 * @valid é utilizado para indicar o ponto de validação para o bean validation
+	 * jakart
 	 */
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)

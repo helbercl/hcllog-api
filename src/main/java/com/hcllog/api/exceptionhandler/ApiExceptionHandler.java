@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import com.hcllog.api.domain.exception.EntidadeNaoEncontradaException;
 import com.hcllog.api.domain.exception.NegocioException;
 import com.hcllog.api.domain.model.Campo;
 
@@ -30,21 +31,22 @@ import lombok.AllArgsConstructor;
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
-	//As mensagens indicadas no arquivo properties so funcionam se injetar a classe MessageSource
+	// As mensagens indicadas no arquivo properties so funcionam se injetar a classe
+	// MessageSource
 	private MessageSource messageSource;
-	
+
 	@Override
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
 			HttpHeaders headers, HttpStatus status, WebRequest request) {
 
 		List<Campo> campos = new ArrayList<>();
-		
+
 		for (ObjectError error : ex.getBindingResult().getAllErrors()) {
-			String nome = ((FieldError)error).getField();
-			String mensagem =messageSource.getMessage(error, LocaleContextHolder.getLocale());
-			campos.add( new Campo(nome, mensagem));
+			String nome = ((FieldError) error).getField();
+			String mensagem = messageSource.getMessage(error, LocaleContextHolder.getLocale());
+			campos.add(new Campo(nome, mensagem));
 		}
-		
+
 		Erro erro = new Erro();
 		erro.setCd_status(status.value());
 		erro.setDataHoraErro(OffsetDateTime.now());
@@ -52,16 +54,28 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 		erro.setListaCampos(campos);
 		return super.handleExceptionInternal(ex, erro, headers, status, request);
 	}
-	
+
 	@ExceptionHandler(NegocioException.class)
-	public ResponseEntity<Object> handleNegocio(NegocioException ne, WebRequest request){
-		
-		HttpStatus status =HttpStatus.BAD_REQUEST;
+	public ResponseEntity<Object> handleNegocio(NegocioException ne, WebRequest request) {
+
+		HttpStatus status = HttpStatus.BAD_REQUEST;
 		Erro erro = new Erro();
 		erro.setCd_status(status.value());
 		erro.setDataHoraErro(OffsetDateTime.now());
 		erro.setDescricaoErro(ne.getMessage());
 		return handleExceptionInternal(ne, erro, new HttpHeaders(), status, request);
-		
+
+	}
+	
+	@ExceptionHandler(EntidadeNaoEncontradaException.class)
+	public ResponseEntity<Object> handleNegocio(EntidadeNaoEncontradaException ne, WebRequest request) {
+
+		HttpStatus status = HttpStatus.NOT_FOUND;
+		Erro erro = new Erro();
+		erro.setCd_status(status.value());
+		erro.setDataHoraErro(OffsetDateTime.now());
+		erro.setDescricaoErro(ne.getMessage());
+		return handleExceptionInternal(ne, erro, new HttpHeaders(), status, request);
+
 	}
 }

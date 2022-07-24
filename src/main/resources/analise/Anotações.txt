@@ -1,0 +1,25 @@
+Em relação a organização e utilização dos pacotes pelo que entendi seria da seguinte forma:
+
+1 - Model - Os objetos mapeados, em conjunto com os objetos do pacote repository, que farão a relação em qual tabela sera realizado o crud .
+
+2 - Repository - O pacote que fará a persistencia de dados . Cada entidade(Entity/Recuso) terá uma classe.
+
+3 - Controller - O pacote com as classes que serão a interface do serviço para o consumer. Indicando os metodos, campos de input e output.
+
+4 - Service - O pacote com as classes de regra de negocios onde serão manipulados os objetos enviados pelo controller de acordo com as regras de negocios e validações basicas.
+
+5 - Common - Classes de uso comum que podem ser utilizados em qualquer parte do projeto.
+
+6 - Assembler - Classes para DTO entre objetos. Faz conversão de objetos do mesmo tipo para funcionalidades diferentes(input,output)
+
+7 - InputModel - Classes que serão usadas para coletar os dados o requestBody json enviado.
+
+8 - OutputModel - Classes com os dados necessários que devemos retornar para o consumer.Caso indique um campo a mais então nao afetará a api via controller.
+
+9 - exceptionhandler - Tratamento de exceções de acordo com a mensagem.Personalização atraves da classe NegocioExceptio do pacote exception.
+
+10 - ValidationsGroups - Tratamento para validações diferenciadas da default.
+
+Esse conceito foi entendido corretamente?
+
+Basicamente, criei , por exemplo,nas classes do controller metodos com retorno outuputEntrega e entrada inputEntrega e fiz a conversão de input para o tipo da entidade e depois converti para o outputModel.

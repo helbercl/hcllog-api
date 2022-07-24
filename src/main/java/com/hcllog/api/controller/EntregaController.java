@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.hcllog.api.domain.model.Entrega;
+import com.hcllog.api.domain.model.input.EntregaInput;
 import com.hcllog.api.domain.service.SolicitacaoEntregaService;
-import com.hcllog.api.representationmodel.dto.EntregaModel;
+import com.hcllog.api.representationmodel.outuput.EntregaModelOutuput;
 
 import lombok.AllArgsConstructor;
 
@@ -26,21 +26,21 @@ import lombok.AllArgsConstructor;
 public class EntregaController {
 
 	private SolicitacaoEntregaService solicitacaoEntregaService;
-	
+
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Entrega solicitar(@Valid @RequestBody Entrega entrega) {		
-		return solicitacaoEntregaService.solicitar(entrega);		
+	public EntregaModelOutuput solicitar(@Valid @RequestBody EntregaInput entrega) {
+		return solicitacaoEntregaService.solicitar(entrega);
 	}
-	
+
 	@GetMapping
-	public List<Entrega> listar(){
+	public List<EntregaModelOutuput> listar() {
 		return solicitacaoEntregaService.listar();
 	}
+
 	@GetMapping("/{entregaId}")
-	public ResponseEntity<EntregaModel> listar(@PathVariable Long entregaId){
-		return solicitacaoEntregaService.listar(entregaId);		
+	public ResponseEntity<EntregaModelOutuput> listar(@PathVariable Long entregaId) {
+		return solicitacaoEntregaService.listar(entregaId);
 	}
-	
-	
+
 }

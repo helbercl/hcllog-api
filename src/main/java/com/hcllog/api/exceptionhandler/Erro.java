@@ -14,10 +14,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Erro {
-	
+
 	private Integer cd_status;
 	private OffsetDateTime dataHoraErro;
 	private String descricaoErro;
 	private List<Campo> listaCampos;
-	
+
 }

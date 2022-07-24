@@ -9,11 +9,14 @@ import org.springframework.stereotype.Repository;
 import com.hcllog.api.domain.model.Cliente;
 
 @Repository
-public interface ClienteRepository extends JpaRepository<Cliente, Long>{
-	
+public interface ClienteRepository extends JpaRepository<Cliente, Long> {
+
 	List<Cliente> findByNome(String nome);
+
 	List<Cliente> findByNomeContaining(String nome);
+
 	Optional<Cliente> findByEmail(String email);
+
 	Optional<Cliente> findByTelefone(String telefone);
 
 }

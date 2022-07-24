@@ -1,21 +1,23 @@
-package com.hcllog.api.representationmodel.dto;
+package com.hcllog.api.representationmodel.outuput;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+
 import com.hcllog.api.domain.model.StatusEntrega;
+
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class EntregaModel {
-	
+public class EntregaModelOutuput {
+
 	private Long id;
-	private String nomeCliente;
-	private DestinatarioModel destinatario;
+	private ClienteResumoModelOutuput cliente;
+	private DestinatarioModelOutuput destinatario;
 	private BigDecimal taxa;
 	private StatusEntrega status;
 	private OffsetDateTime dataPedido;
 	private OffsetDateTime dataFinalização;
-	
+
 }
