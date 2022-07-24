@@ -5,6 +5,7 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import com.hcllog.api.assembler.OcorrenciaAssembler;
+import com.hcllog.api.domain.exception.NegocioException;
 import com.hcllog.api.domain.model.Entrega;
 import com.hcllog.api.domain.model.Ocorrencia;
 
@@ -15,12 +16,15 @@ import lombok.AllArgsConstructor;
 public class RegistroOcorrenciaService {
 
 	private BuscaEntregaService buscaEntregaService;
-	private OcorrenciaAssembler ocorrenciaAssembler;
 
 	@Transactional
 	public Ocorrencia registrar(Long entregaId, String descricao) {
 
 		Entrega entrega = buscaEntregaService.buscar(entregaId);
+
+		if (!entrega.podeSerfinalizada()) {
+			throw new NegocioException("Não é permitido registrar ocorrências com o status atual da entrega.");
+		}
 		return entrega.adicionarOcorrencia(descricao);
 
 	}

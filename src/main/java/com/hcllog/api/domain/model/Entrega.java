@@ -16,6 +16,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.hcllog.api.domain.exception.NegocioException;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -83,6 +85,8 @@ public class Entrega {
 	@OneToMany(mappedBy = "entrega", cascade = CascadeType.ALL)
 	private List<Ocorrencia> listaOcorrencias = new ArrayList<>();
 
+	private String ultimaOcorrencia;
+
 	public Ocorrencia adicionarOcorrencia(String descricao) {
 
 		Ocorrencia ocorrencia = new Ocorrencia();
@@ -93,6 +97,37 @@ public class Entrega {
 
 		return ocorrencia;
 
+	}
+
+	public void finalizar() {
+		if (!podeSerfinalizada()) {
+			throw new NegocioException("Não é permitido finalizar a entrega com o status atual");
+		}
+		mudarStatusEntregaAutomatico();
+	}
+
+	public Boolean podeSerfinalizada() {
+		return StatusEntrega.PENDENTE.equals(this.getStatus());
+	}
+
+	private void mudarStatusEntregaAutomatico() {
+
+		ultimaOcorrencia = ultimaOcorrenciaEntrega();
+
+		if (ultimaOcorrencia.startsWith("Entregue")) {
+			this.setStatus(StatusEntrega.FINALIZADA);
+			this.setDataFinalizacao(OffsetDateTime.now());
+		} else if (ultimaOcorrencia.startsWith("Cancelada")) {
+			this.setStatus(StatusEntrega.CANCELADA);
+			this.setDataFinalizacao(OffsetDateTime.now());
+		}
+
+	}
+
+	private String ultimaOcorrenciaEntrega() {
+		boolean existeOcorrencia = this.getListaOcorrencias().size() > 0;
+		return existeOcorrencia ? this.getListaOcorrencias().get(this.getListaOcorrencias().size() - 1).getDescricao()
+				: "Sem Registros";
 	}
 
 }
