@@ -111,9 +111,7 @@ public class Entrega {
 	}
 
 	private void mudarStatusEntregaAutomatico() {
-
 		ultimaOcorrencia = ultimaOcorrenciaEntrega();
-
 		if (ultimaOcorrencia.startsWith("Entregue")) {
 			this.setStatus(StatusEntrega.FINALIZADA);
 			this.setDataFinalizacao(OffsetDateTime.now());
@@ -121,7 +119,6 @@ public class Entrega {
 			this.setStatus(StatusEntrega.CANCELADA);
 			this.setDataFinalizacao(OffsetDateTime.now());
 		}
-
 	}
 
 	private String ultimaOcorrenciaEntrega() {

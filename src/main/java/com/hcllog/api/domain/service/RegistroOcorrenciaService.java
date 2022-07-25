@@ -4,7 +4,6 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
-import com.hcllog.api.assembler.OcorrenciaAssembler;
 import com.hcllog.api.domain.exception.NegocioException;
 import com.hcllog.api.domain.model.Entrega;
 import com.hcllog.api.domain.model.Ocorrencia;
